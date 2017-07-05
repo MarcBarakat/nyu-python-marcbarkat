@@ -38,4 +38,4 @@ print ("THERE ARE " + str(len(departments.keys())) + " DEPARTMENTS:")
 for department in sorted(departments.keys()) :
     print("+ " + department.title() + " (" + str(departments[department]) + " products)")
 
-code.interact(local=locals())
+#code.interact(local=locals())
