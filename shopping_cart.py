@@ -70,8 +70,13 @@ date_str = current_time.strftime("%Y-%m-%d %H:%M:%S")
 print(date_str)
 receipt_string = PrintReceipt(receipt, date_str)
 cwd = os.getcwd()
+directory = cwd +'\\receipts\\'
+try:
+    os.stat(directory)
+except:
+    os.mkdir(directory)
 file_name =   current_time.strftime("%Y-%m-%d-%H-%M-%S-%f") + '.txt'
-completeName = os.path.join(cwd +'\\receipts\\',file_name)
+completeName = os.path.join(directory,file_name)
 
 file = open(completeName, "w")
 file.write(receipt_string)
