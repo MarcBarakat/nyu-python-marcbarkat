@@ -1,4 +1,4 @@
-# Name of Your App
+# CRUD APP
 
 The following crud-app is able to perform inventory management from a csv file contained in the ./data/ directory.
 It is able to:
