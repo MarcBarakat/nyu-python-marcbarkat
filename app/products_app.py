@@ -48,25 +48,28 @@ def DestroyProduct(data, product_id):
     data[:] = [d for d in data if d.get('id') != product_id]
     return(data)
 
-def UpdateProduct(data):
-    product_id = input("Please input the product id")
+def UpdateProduct(data, product_id):
     product_data = LookupIdFromList(data, product_id)
     print("Please specify the product's information ")
     name = input("Change name from: " + product_data["name"]+" to: ")
     aisle = input("Change aisle from: " + product_data["aisle"]+" to: ")
     department = input("Change department from: " + product_data["department"]+" to: ")
     price = input("Change price from: " + product_data["price"]+" to: ")
-    updated_product = OrderedDict([('id',str(id)),('name',name), ('aisle',isle), ('department', department), ('price', price)])
+    updated_product = OrderedDict([('id',str(product_id)),('name',name), ('aisle',aisle), ('department', department), ('price', price)])
     print("Updating product with the following information: ")
     print(updated_product)
-    DestroyProduct(data, product_id)
+    data = DestroyProduct(data, product_id)
     data.append(updated_product)
     return(data)
 
-csv_file= open(csv_file_path, "r+")
+csv_file= open(csv_file_path, "r")
 csv_reader = csv.DictReader(csv_file) # assuming your CSV has headers, otherwise... csv.reader(csv_file)
 data = list(csv_reader)
-csv_writer = csv.writer(csv_file)
+csv_file.close()
+csv_file= open(csv_file_path, "w")
+names = data[1]
+print(names)
+csv_writer = csv.DictWriter(csv_file, fieldnames=data[1].keys())
 
 n_prods = len(data)
 print('--------------------------------------------------')
@@ -84,33 +87,32 @@ init_question = init_question + "'Destroy'  | Delete an existing product\.\n"
 init_question = init_question + "'Quit'     | Exit the program\.\n"
 
 init_question = init_question + "\n"
-init_response = input(init_question)
-while(init_response!="Quit"):
+
+while(True):
+    init_response = input(init_question)
     if(init_response in ok_responses):
         if(init_response=="List"):
             ListProducts(data)
-            init_response = input(init_question)
         elif(init_response=="Show"):
             show_response = input("Please specify a product id: ")
             ShowProduct(data, show_response)
-            init_response = input(init_question)
         elif(init_response=="Create"):
             new_product = CreateProduct(data)
             print("Creating product with the following data:")
             print(new_product)
             data.append(new_product)
-            csv_writer.writerows(data)
-            init_response = input(init_question)
         elif(init_response=="Destroy"):
             show_response = input("Please specify a product id: ")
             data = DestroyProduct(data, show_response)
-            csv_writer.writerows(data)
-            init_response = input(init_question)
+            print(data)
         elif(init_response=="Update"):
             show_response = input("Please specify a product id: ")
             data = UpdateProduct(data, show_response)
+        elif(init_response=="Quit"):
+            csv_writer.writeheader()
             csv_writer.writerows(data)
-            init_response = input(init_question)
+            csv_file.close()
+            break
     else:
         print("Please provide a valid response")
         init_response = input(init_question)
