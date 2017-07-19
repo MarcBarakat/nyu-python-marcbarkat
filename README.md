@@ -23,6 +23,7 @@ Finally, download the [example `products.csv` file](https://raw.githubuserconten
 
 ```shell
 Run the command:
-python app/products_app.py
-Follow the instructions
+cd app
+python products_app.py
+Follow the instructions provided by the prompt
 ```
